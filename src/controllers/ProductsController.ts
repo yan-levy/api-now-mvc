@@ -6,28 +6,28 @@ const list = new ListProducts();
 export class ListProductsController {
 	async listAllProducts(req: Request, res: Response) {
 		const result = await list.listAllProducts();
+		// if (result === null)
+		// 	return res.status(404).send('Não existem produtos cadastrados');
 		return res.json(result);
 	}
 
 	async productById(req: Request, res: Response) {
 		const id = Number(req.params.id);
 		const result = await list.productById(id);
+		if (result === null) return res.status(404).send('O produto não existe');
 		return res.json(result);
 	}
 
 	async createProduct(req: Request, res: Response) {
 		const { name, description, provider, quantity } = req.body;
 		if (name.trim() == '') {
-			res.statusCode = 401;
-			return res.json({ error: 'O nome do produto é obrigatório' });
+			return res.status(401).send('O nome do produto é obrigatório');
 		}
 		if (provider.trim() == '') {
-			res.statusCode = 401;
-			return res.json({ error: 'O nome do fornecedor é obrigatório' });
+			return res.status(401).send('O nome do fornecedor é obrigatório');
 		}
 		if (quantity == null) {
-			res.statusCode = 401;
-			return res.json({ error: 'A quantidade é obrigatória' });
+			return res.status(401).send('A quantidade é obrigatória');
 		}
 		const result = await list.createProduct(
 			name,
@@ -35,7 +35,6 @@ export class ListProductsController {
 			provider,
 			quantity
 		);
-		res.statusCode = 200;
 		return res.json(result);
 	}
 
@@ -43,16 +42,13 @@ export class ListProductsController {
 		const { name, description, provider, quantity } = req.body;
 		const id = req.params.id;
 		if (name.trim() == '') {
-			res.statusCode = 401;
-			return res.json({ error: 'O nome do produto é obrigatório' });
+			return res.status(401).send('O nome do produto é obrigatório');
 		}
 		if (provider.trim() == '') {
-			res.statusCode = 401;
-			return res.json({ error: 'O nome do fornecedor é obrigatório' });
+			return res.status(401).send('O nome do fornecedor é obrigatório');
 		}
 		if (quantity == null) {
-			res.statusCode = 401;
-			return res.json({ error: 'A quantidade é obrigatória' });
+			return res.status(401).send('A quantidade é obrigatória');
 		}
 
 		const result = await list.editProduct(
@@ -62,13 +58,13 @@ export class ListProductsController {
 			provider,
 			quantity
 		);
-		res.statusCode = 200;
 		return res.json(result);
 	}
 
 	async deleteProduct(req: Request, res: Response) {
 		const id = req.params.id;
 		const result = await list.deleteProduct(Number(id));
+		// if (result === null) return res.status(404).json('O produto não existe');
 		return res.json(result);
 	}
 }

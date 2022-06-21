@@ -1,6 +1,6 @@
 {
 	"scripts": {
-		"devStart": "nodemon app.ts"
+		"devStart": "nodemon server.ts"
 	},
 	"devDependencies": {
 		"@types/node": "^17.0.42",

@@ -4,10 +4,8 @@ const app = express();
 
 app.use(express.json());
 
-app.use('/', router);
+app.use('/product', router);
 
 app.listen(8080, () => {
 	console.log('Server running on PORT 8080');
 });
-
-export { app };
