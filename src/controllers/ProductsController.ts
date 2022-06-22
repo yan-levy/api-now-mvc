@@ -1,3 +1,5 @@
+import { empty } from '@prisma/client/runtime';
+import { count } from 'console';
 import { Request, Response } from 'express';
 import { ListProducts } from '../model/list';
 
@@ -6,8 +8,8 @@ const list = new ListProducts();
 export class ListProductsController {
 	async listAllProducts(req: Request, res: Response) {
 		const result = await list.listAllProducts();
-		// if (result === null)
-		// 	return res.status(404).send('Não existem produtos cadastrados');
+		if (result.length == 0)
+			return res.status(404).send('Não existem produtos cadastrados')
 		return res.json(result);
 	}
 
@@ -64,7 +66,6 @@ export class ListProductsController {
 	async deleteProduct(req: Request, res: Response) {
 		const id = req.params.id;
 		const result = await list.deleteProduct(Number(id));
-		// if (result === null) return res.status(404).json('O produto não existe');
 		return res.json(result);
 	}
 }
